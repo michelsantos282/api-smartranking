@@ -9,11 +9,11 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ValidacaoParametrosPipe } from 'src/common/pipes/validacao-parametros.pipe';
 import { CategoriasService } from './categorias.service';
 import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { Categoria } from './interfaces/categoria.interface';
-import { CategoriasValidacaoParametrosPipe } from './pipes/categorias-validacao-parametros.pipe';
 
 @Controller('api/v1/categorias')
 export class CategoriasController {
@@ -33,7 +33,7 @@ export class CategoriasController {
 
   @Get('/:categoria')
   async consultarCategoriasPeloId(
-    @Param('categoria', CategoriasValidacaoParametrosPipe) categoria: string,
+    @Param('categoria', ValidacaoParametrosPipe) categoria: string,
   ): Promise<Categoria> {
     return await this.categoriaService.consultarCategoria(categoria);
   }
@@ -42,7 +42,7 @@ export class CategoriasController {
   @UsePipes(ValidationPipe)
   async atualizarCategoria(
     @Body() atualizarCategoriaDto: AtualizarCategoriaDto,
-    @Param('categoria', CategoriasValidacaoParametrosPipe) categoria: string,
+    @Param('categoria', ValidacaoParametrosPipe) categoria: string,
   ): Promise<void> {
     await this.categoriaService.atualizarCategoria(
       categoria,
@@ -52,14 +52,14 @@ export class CategoriasController {
 
   @Delete('/:categoria')
   async deletarCategoria(
-    @Param('categoria', CategoriasValidacaoParametrosPipe) categoria: string,
+    @Param('categoria', ValidacaoParametrosPipe) categoria: string,
   ): Promise<void> {
     await this.categoriaService.deletarCategoria(categoria);
   }
 
   @Post('/:categoria/jogadores/:idJogador')
   async atribuirJogadorCategoria(
-    @Param(CategoriasValidacaoParametrosPipe) params: string[],
+    @Param(ValidacaoParametrosPipe) params: string[],
   ): Promise<void> {
     return await this.categoriaService.atribuirCategoriaJogador(params);
   }
